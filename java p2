@@ -1,0 +1,118 @@
+// DIV-23 Implementation Highlights
+
+import java.util.*;
+
+// 1. Encapsulation + Classes
+class Employee {
+    private int empId;
+    private String empName;
+
+    // Default Constructor
+    Employee() {
+        this.empId = 0;
+        this.empName = "Unknown";
+    }
+
+    // Parameterized Constructor
+    Employee(int empId, String empName) {
+        this.empId = empId;
+        this.empName = empName;
+    }
+
+    // Copy Constructor
+    Employee(Employee e) {
+        this.empId = e.empId;
+        this.empName = e.empName;
+    }
+
+    // Getters and Setters (Encapsulation)
+    public int getEmpId() { return empId; }
+    public void setEmpId(int empId) { this.empId = empId; }
+    public String getEmpName() { return empName; }
+    public void setEmpName(String empName) { this.empName = empName; }
+
+    @Override
+    public String toString() {
+        return empId + " - " + empName;
+    }
+
+    // finalize method → for GC
+    @Override
+    protected void finalize() {
+        System.out.println("GC called for Employee: " + empName);
+    }
+}
+
+// 2. Abstract Class
+abstract class Vehicle {
+    abstract void start();
+}
+
+// 3. Inheritance & Polymorphism
+class Car extends Vehicle {
+    void start() { System.out.println("Car starts with a key."); }
+}
+
+class Bike extends Vehicle {
+    void start() { System.out.println("Bike starts with a self-start button."); }
+}
+
+// 4. Final and Static
+class Company {
+    static String companyName = "XYZ Solutions";  // static field
+    final String regCode = "COMP-2023";           // final field
+
+    static void displayCompany() {
+        System.out.println("Company Name: " + companyName);
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+
+        // --- Classes & Object Array ---
+        Employee[] empArr = new Employee[2];
+        empArr[0] = new Employee(101, "Ravi");
+        empArr[1] = new Employee(102, "Kiran");
+        for (Employee e : empArr) {
+            System.out.println("Employee: " + e);
+        }
+
+        // Copy constructor
+        Employee eCopy = new Employee(empArr[0]);
+        System.out.println("Copied Employee: " + eCopy);
+
+        // --- Abstract + Polymorphism ---
+        Vehicle v1 = new Car();
+        Vehicle v2 = new Bike();
+        v1.start();
+        v2.start();
+
+        // --- Final & Static ---
+        Company.displayCompany();
+        Company c = new Company();
+        System.out.println("Company Registration Code (final): " + c.regCode);
+
+        // --- Collections Framework ---
+        List<String> departments = new ArrayList<>();
+        departments.add("HR");
+        departments.add("Finance");
+        departments.add("IT");
+        System.out.println("Departments: " + departments);
+
+        Set<String> uniqueRoles = new HashSet<>();
+        uniqueRoles.add("Manager");
+        uniqueRoles.add("Developer");
+        uniqueRoles.add("Manager"); // duplicate ignored
+        System.out.println("Unique Roles: " + uniqueRoles);
+
+        Map<Integer, String> empMap = new HashMap<>();
+        empMap.put(1, "Ravi");
+        empMap.put(2, "Kiran");
+        System.out.println("Employee Map: " + empMap);
+
+        // Triggering Garbage Collection
+        empArr[0] = null;
+        System.gc();
+    }
+}
