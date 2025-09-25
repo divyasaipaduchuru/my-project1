@@ -1,0 +1,100 @@
+
+import java.util.*;
+
+// 1. Encapsulation + Classes
+class Student {
+    private int id;
+    private String name;
+
+    // Constructor
+    Student(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    // Getters (Encapsulation)
+    public int getId() { return id; }
+    public String getName() { return name; }
+
+    @Override
+    public String toString() {
+        return id + " - " + name;
+    }
+
+    // finalize() → called by Garbage Collector
+    @Override
+    protected void finalize() {
+        System.out.println("GC called for Student: " + name);
+    }
+}
+
+// 2. Abstract Class
+abstract class Shape {
+    abstract void draw(); // abstract method
+}
+
+// 3. Inheritance + Polymorphism
+class Circle extends Shape {
+    void draw() { System.out.println("Drawing Circle"); }
+}
+
+class Rectangle extends Shape {
+    void draw() { System.out.println("Drawing Rectangle"); }
+}
+
+// 4. Final and Static
+class University {
+    static String universityName = "ABC University";  // static field
+    final String code = "UNI123";                     // final field
+
+    static void showInfo() {
+        System.out.println("University: " + universityName);
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+
+        // --- Classes & Object Array ---
+        Student[] students = {
+            new Student(1, "Pavan"),
+            new Student(2, "Tej")
+        };
+        for (Student s : students) {
+            System.out.println("Student: " + s);
+        }
+
+        // --- Abstract + Polymorphism ---
+        Shape s1 = new Circle();
+        Shape s2 = new Rectangle();
+        s1.draw();  // runtime polymorphism
+        s2.draw();
+
+        // --- Final & Static ---
+        University.showInfo();
+        University u = new University();
+        System.out.println("University Code (final): " + u.code);
+
+        // --- Collections Framework ---
+        List<String> courses = new ArrayList<>();
+        courses.add("Java");
+        courses.add("SQL");
+        courses.add("AI");
+        System.out.println("Courses: " + courses);
+
+        Set<Integer> ids = new HashSet<>();
+        ids.add(101);
+        ids.add(102);
+        ids.add(101); // duplicate ignored
+        System.out.println("Unique IDs: " + ids);
+
+        Map<Integer, String> map = new HashMap<>();
+        map.put(1, "Pavan");
+        map.put(2, "Tej");
+        System.out.println("Map: " + map);
+
+        // Triggering Garbage Collection
+        students[0] = null;
+        System.gc();
+    }
+}
